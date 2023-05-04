@@ -9,6 +9,6 @@ urlpatterns = [
 
     # other URL patterns
     path('report_download/', report_download, name='report_download'),
-    path('report_download/<int:report_id>/',
+    path('report_download/<int:report_id>',
          report_download, name='report_download'),
 ]

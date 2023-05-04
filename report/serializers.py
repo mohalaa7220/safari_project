@@ -27,12 +27,15 @@ class AddReportSerializer(serializers.ModelSerializer):
 
 
 class ReportSerializer(serializers.ModelSerializer):
-    added_by = serializers.StringRelatedField(source='user')
+    added_by = serializers.SerializerMethodField()
     product = serializers.StringRelatedField()
 
     class Meta:
         model = Report
         fields = ['id', 'text', 'added_by', 'product', 'created', 'updated']
+
+    def get_added_by(self, obj):
+        return f'{obj.added_by.first_name} {obj.added_by.last_name}'
 
 
 class UpdateReportSerializer(serializers.ModelSerializer):
