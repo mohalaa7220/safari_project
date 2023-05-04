@@ -37,6 +37,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_hired = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=20, null=True, blank=True)
     shift_time = models.CharField(max_length=220, blank=True, null=True)
+    image = models.ImageField(
+        upload_to='user_images', blank=True, null=True)
 
     USERNAME_FIELD = 'email'
 
@@ -47,6 +49,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def save(self, *args, **kwargs):
         self.role = self.role.lower()
+        if self.status:
+            self.status = self.status.lower()
+        if self.shift_time:
+            self.shift_time = self.shift_time.lower()
         super(User, self).save(*args, **kwargs)
 
 

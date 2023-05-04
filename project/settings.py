@@ -162,3 +162,8 @@ CORS_ALLOW_METHODS = [
 
 
 AUTH_USER_MODEL = 'users.User'
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

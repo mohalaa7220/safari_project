@@ -13,7 +13,8 @@ class SignUpManagerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "phone", "password"]
+        fields = ["email", "first_name", "last_name",
+                  "phone", "password", 'image']
 
     extra_kwargs = {
         'email': {'required': True},
@@ -44,7 +45,7 @@ class SignUpEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email", "first_name", "last_name", "phone",
-                  'password', 'status', 'shift_time', 'date_hired']
+                  'password', 'status', 'shift_time', 'date_hired', 'image']
 
     extra_kwargs = {
         'email': {'required': True},
@@ -72,7 +73,8 @@ class SignUpEmployeeSerializer(serializers.ModelSerializer):
 class UserManagerProfile(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', "email", "first_name", "last_name", "phone", 'role']
+        fields = ['id', "email", "first_name",
+                  "last_name", "phone", 'role', 'image']
 
 
 # Profile Data Employee
@@ -80,14 +82,14 @@ class EmployeeSerializerProfile(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', "email", "first_name", "last_name",
-                  "phone", 'role', 'status', 'shift_time', 'date_hired']
+                  "phone", 'role', 'status', 'shift_time', 'date_hired', 'image']
 
 
 # Update Profile Manager
 class UpdateManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "phone"]
+        fields = ["email", "first_name", "last_name", "phone", 'image']
 
     def validate(self, attrs):
         email = attrs.get('email')
@@ -112,7 +114,7 @@ class UpdateEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["email", "first_name", "last_name",
-                  "phone", 'status', 'shift_time', 'date_hired']
+                  "phone", 'status', 'shift_time', 'date_hired', 'image']
 
     def validate(self, attrs, pk=None):
         email = attrs.get('email')

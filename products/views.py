@@ -13,7 +13,7 @@ from pyzbar.pyzbar import decode
 import qrcode
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
-from django.views.static import serve
+from project.serializer_error import serializer_error
 
 
 def generate_qr_code(product):
@@ -37,32 +37,36 @@ class Products(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = ProductFilter
-    queryset = Product.objects.select_related('employee__user').all()
+    queryset = Product.objects.select_related('added_by', 'employee').all()
 
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset
 
-    def create(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = AddProductSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        save_qr_code(serializer.instance)
-        headers = self.get_success_headers(serializer.data)
-        return Response({"message": "Product Created Successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+        if serializer.is_valid():
+            serializer.save(added_by=request.user)
+            save_qr_code(serializer.instance)
+            headers = self.get_success_headers(serializer.data)
+            return Response({"message": "Product Created Successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            return serializer_error(serializer)
 
 
 class OneProduct(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = ProductSerializer
-    queryset = Product.objects.select_related('employee__user').all()
+    queryset = Product.objects.select_related('added_by', 'employee').all()
 
     def update(self, request, pk=None):
         product = self.get_object()
         serializer = UpdateProductSerializer(product, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"message": "Product updated successfully"}, status=status.HTTP_200_OK)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Product updated successfully"}, status=status.HTTP_200_OK)
+        else:
+            return serializer_error(serializer)
 
 
 # =========================
