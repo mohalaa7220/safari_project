@@ -23,8 +23,10 @@ class SignUpManagerView(generics.GenericAPIView):
         serializer = self.serializer_class(data=data)
         if serializer.is_valid():
             user = serializer.save()
+            data_serializer = UserManagerProfile(
+                user, context={"request": request}).data
             Token.objects.create(user=user).key
-            return Response(data={"message": "User Created Successfully"}, status=status.HTTP_201_CREATED)
+            return Response(data={"message": "User Created Successfully", "data": data_serializer}, status=status.HTTP_201_CREATED)
         else:
             return serializer_error(serializer)
 
