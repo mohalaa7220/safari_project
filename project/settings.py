@@ -87,17 +87,14 @@ REST_FRAMEWORK = {
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'safari',
-        'USER': 'root',
-        'PASSWORD': '722072207220Mo',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'USER': 'mohamed',
+        'PASSWORD': '722072207220',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
