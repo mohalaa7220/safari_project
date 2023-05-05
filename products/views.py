@@ -9,7 +9,6 @@ from django_filters import rest_framework as filters
 from .ProductFilter import ProductFilter
 from io import BytesIO
 from PIL import Image
-from pyzbar.pyzbar import decode
 import qrcode
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
@@ -77,35 +76,3 @@ class OneProduct(generics.RetrieveUpdateDestroyAPIView):
 # =========================
 
 # =========================
-
-class BarcodeScanView(views.APIView):
-    def post(self, request):
-        # Read the image data from the request
-        image_data = BytesIO(request.body)
-
-        # Open the image using Pillow
-        image = Image.open(image_data)
-
-        # Extract barcodes from the image using pyzbar
-        barcodes = decode(image)
-
-        # Look up the products associated with the barcodes
-        products = []
-        for barcode in barcodes:
-            barcode_data = barcode.data.decode('utf-8')
-            try:
-                product = Product.objects.get(barcode=barcode_data)
-                products.append(product)
-            except Product.DoesNotExist:
-                pass
-
-        # Serialize the products and return them as a response
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
-
-
-class QRCodeView(views.APIView):
-    def get(self, request, pk):
-        product = get_object_or_404(Product, pk=pk)
-        serializer = ProductSerializer(product, context={'request': request})
-        return Response(serializer.data)
