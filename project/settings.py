@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -98,6 +100,13 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+
+DATABASES['default'] = dj_database_url.parse(
+    'postgres://safari_2i3s_user:I6zjcdspvxlJwitvMYakQn0UFXACXfMW@dpg-chahg72k728r8800s090-a.oregon-postgres.render.com/safari_2i3s',
+    conn_max_age=600,
+    conn_health_checks=True,
+)
 
 
 # Password validation
