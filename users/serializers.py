@@ -82,7 +82,7 @@ class EmployeeSerializerProfile(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', "email", "first_name", "last_name",
-                  "phone", 'role', 'status', 'shift_time', 'date_hired', 'image']
+                  "phone", 'role', 'status', 'shift_time', 'date_hired', 'image', 'is_active']
 
 
 # Update Profile Manager

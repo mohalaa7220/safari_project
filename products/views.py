@@ -68,6 +68,11 @@ class OneProduct(generics.RetrieveUpdateDestroyAPIView):
         else:
             return serializer_error(serializer)
 
+    def delete(self, request, pk=None):
+        product = self.get_object()
+        product.delete()
+        return Response({"message": "Product deleted successfully"}, status=status.HTTP_200_OK)
+
 
 # =========================
 

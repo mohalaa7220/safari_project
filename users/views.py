@@ -25,15 +25,15 @@ class SignUpManagerView(generics.GenericAPIView):
             user = serializer.save()
             data_serializer = UserManagerProfile(
                 user, context={"request": request}).data
-            Token.objects.create(user=user).key
-            return Response(data={"message": "User Created Successfully", "data": data_serializer}, status=status.HTTP_201_CREATED)
+            token = Token.objects.create(user=user).key
+            return Response(data={"message": "User Created Successfully", "data": data_serializer, 'token': token}, status=status.HTTP_201_CREATED)
         else:
             return serializer_error(serializer)
 
 
 class EmployeeRegistrationView(generics.GenericAPIView):
     serializer_class = SignUpEmployeeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsManager]
 
     def post(self, request):
         data = request.data
@@ -112,6 +112,12 @@ class UpdateEmployeeProfile(generics.RetrieveUpdateDestroyAPIView):
         else:
             return serializer_error(serializer)
 
+    def delete(self, request, pk=None):
+        employee = self.get_object()
+        employee.is_active = False
+        employee.save()
+        return Response({"message": "Profile deleted successfully"}, status=status.HTTP_200_OK)
+
 
 # Get all employees
 class AllEmployees(generics.ListCreateAPIView):
@@ -124,4 +130,15 @@ class AllEmployees(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset
+        return queryset.order_by('-date_hired')
+
+
+class ActiveEmployee(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated, IsManager]
+    queryset = User.objects.all()
+
+    def update(self, request, pk=None):
+        employee = self.get_object()
+        employee.is_active = True
+        employee.save()
+        return Response({"message": "User active successfully"}, status=status.HTTP_200_OK)

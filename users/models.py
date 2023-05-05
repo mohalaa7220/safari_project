@@ -66,7 +66,7 @@ class Manager(models.Model):
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     manager = models.ForeignKey(
-        Manager, on_delete=models.CASCADE, related_name='manager_employee')
+        Manager, on_delete=models.CASCADE, related_name='manager_employee', null=True, blank=True)
 
     def __str__(self):
         return self.user.email

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (SignUpManagerView, UserLoginView, EmployeeRegistrationView,
-                    UserProfile, UpdateProfile, UpdateEmployeeProfile, AllEmployees)
+                    UserProfile, UpdateProfile, UpdateEmployeeProfile, AllEmployees, ActiveEmployee)
 
 
 urlpatterns = [
@@ -14,4 +14,6 @@ urlpatterns = [
     path('employees/<int:pk>',
          UpdateEmployeeProfile.as_view(), name='employees'),
     path('profile', UserProfile.as_view(), name='profile'),
+    path('active_employee/<int:pk>',
+         ActiveEmployee.as_view(), name='active_employee'),
 ]
