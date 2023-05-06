@@ -88,22 +88,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'safari',
-        'USER': 'mohamed',
-        'PASSWORD': '722072207220',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.parse(
+        'postgres://safari_2i3s_user:I6zjcdspvxlJwitvMYakQn0UFXACXfMW@dpg-chahg72k728r8800s090-a.oregon-postgres.render.com/safari_2i3s',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
-
-
-DATABASES['default'] = dj_database_url.parse(
-    'postgres://safari_2i3s_user:I6zjcdspvxlJwitvMYakQn0UFXACXfMW@dpg-chahg72k728r8800s090-a.oregon-postgres.render.com/safari_2i3s',
-    conn_max_age=600,
-    conn_health_checks=True,
-)
 
 
 # Password validation

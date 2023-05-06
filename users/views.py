@@ -124,13 +124,8 @@ class AllEmployees(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated, IsManager]
     queryset = User.objects.filter(role='employee')
     serializer_class = EmployeeSerializerProfile
-    pagination_class = UsersPagination
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = UserFilter
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.order_by('-date_hired')
 
 
 class ActiveEmployee(generics.RetrieveUpdateAPIView):

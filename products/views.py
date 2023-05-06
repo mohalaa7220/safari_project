@@ -32,15 +32,10 @@ def save_qr_code(product):
 
 class Products(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    pagination_class = ProductsPagination
     serializer_class = ProductSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = ProductFilter
     queryset = Product.objects.select_related('added_by', 'employee').all()
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset
 
     def post(self, request, *args, **kwargs):
         serializer = AddProductSerializer(data=request.data)

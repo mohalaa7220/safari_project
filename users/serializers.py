@@ -50,7 +50,6 @@ class SignUpEmployeeSerializer(serializers.ModelSerializer):
     extra_kwargs = {
         'email': {'required': True},
         'phone': {'required': True},
-        'password': {'required': True},
     }
 
     def validate(self, attrs):
