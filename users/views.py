@@ -64,7 +64,7 @@ class UserLoginView(views.APIView):
         return Response({
             "message": "Login Successfully",
             "data": serializer.data,
-            "token": token.key}, status=status.HTTP_201_CREATED)
+            "token": token.key}, status=status.HTTP_200_OK)
 
 
 # Profile
