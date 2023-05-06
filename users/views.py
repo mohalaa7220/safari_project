@@ -42,7 +42,7 @@ class EmployeeRegistrationView(generics.GenericAPIView):
         if serializer.is_valid():
             user = serializer.save()
             Token.objects.create(user=user).key
-            return Response(data={"message": "User Created Successfully"}, status=status.HTTP_201_CREATED)
+            return Response(data={"message": "User Created Successfully"}, status=status.HTTP_200_OK)
         else:
             return serializer_error(serializer)
 

@@ -43,7 +43,7 @@ class Products(generics.ListCreateAPIView):
             serializer.save(added_by=request.user)
             save_qr_code(serializer.instance)
             headers = self.get_success_headers(serializer.data)
-            return Response({"message": "Product Created Successfully"}, status=status.HTTP_201_CREATED, headers=headers)
+            return Response({"message": "Product Created Successfully"}, status=status.HTTP_200_OK, headers=headers)
         else:
             return serializer_error(serializer)
 
